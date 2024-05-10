@@ -1,47 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using BookStash3312;
 using BookStash3312.Models;
+using System.Threading.Tasks;
 
-namespace BookStash3312.Pages.Books
+namespace BookStash3312.Pages.Reviews
 {
-    public class CreateModel : PageModel
+    public class CreateReviewModel : PageModel
     {
         private readonly BookStash3312.Models.BookContext _context;
 
-        public CreateModel(BookStash3312.Models.BookContext context)
+        public SelectList BookList {get;set;}
+
+        [BindProperty]
+        public Review Reviews {get;set;}
+
+        public CreateReviewModel(BookStash3312.Models.BookContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
+            PopulateBookList();
             return Page();
         }
 
-
-        [BindProperty]
-    
-        public Book Book { get; set; } = default!;
-        
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                PopulateBookList();
                 return Page();
             }
 
-            _context.Books.Add(Book);
+            _context.Reviews.Add(Reviews);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        private void PopulateBookList()
+        {
+            var books = _context.Books;
+            BookList = new SelectList(books, "BookId", "Title");
         }
     }
 }
