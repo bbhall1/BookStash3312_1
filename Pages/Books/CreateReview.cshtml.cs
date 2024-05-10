@@ -10,15 +10,18 @@ namespace BookStash3312.Pages.Reviews
     {
         private readonly BookStash3312.Models.BookContext _context;
 
-        public SelectList BookList {get;set;}
+        public IList<Review> Reviews {get;set;} = default!;
+        public SelectList? BookList {get;set;}
 
         [BindProperty]
-        public Review Reviews {get;set;}
+        public Review Review {get;set;}
 
         public CreateReviewModel(BookStash3312.Models.BookContext context)
         {
             _context = context;
         }
+
+        
 
         public IActionResult OnGet()
         {
@@ -34,7 +37,7 @@ namespace BookStash3312.Pages.Reviews
                 return Page();
             }
 
-            _context.Reviews.Add(Reviews);
+            _context.Reviews.Add(Review);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

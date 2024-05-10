@@ -19,6 +19,8 @@ namespace BookStash3312.Pages.Books
             _context = context;
         }
 
+        
+
         public IActionResult OnGet()
         {
             return Page();
@@ -28,7 +30,7 @@ namespace BookStash3312.Pages.Books
         [BindProperty]
     
         public Book Book { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
